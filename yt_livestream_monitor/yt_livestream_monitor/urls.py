@@ -1,9 +1,12 @@
+from django.urls import path, re_path, include
+from django.views.generic import TemplateView
 from django.contrib import admin
-from django.urls import path, include
+
 from monitor.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('monitor/', include('monitor.urls')),
-    path('', home, name='home'),
+
+    re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
