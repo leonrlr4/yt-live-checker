@@ -12,3 +12,11 @@ body {
 .alert {
   margin-top: 20px;
 }
+
+.live {
+  background-color: rgb(155, 223, 190);
+}
+
+.offline {
+  background-color: rgb(226, 91, 91);
+}

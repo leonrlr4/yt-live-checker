@@ -20,6 +20,7 @@ def check_live_status(request):
         try:
             info_dict = ydl.extract_info(video_url, download=False)
             is_live = info_dict.get('is_live')
-            return JsonResponse({'is_live': is_live})
+            title = info_dict.get('title')  # 獲取直播的標題
+            return JsonResponse({'is_live': is_live, 'title': title})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)

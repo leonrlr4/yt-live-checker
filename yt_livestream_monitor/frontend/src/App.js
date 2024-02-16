@@ -4,16 +4,25 @@ import './App.css';
 
 function App() {
   const [ url, setUrl ] = useState('');
-  const [ liveStatus, setLiveStatus ] = useState(null);
+  const [ results, setResults ] = useState([]);
+
 
   const checkLiveStatus = async () => {
     try {
-      const response = await axios.get(`
-      ${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(url) }
-      `);
-      setLiveStatus(response.data.is_live ? 'Live' : 'Offline');
+      const response = await axios.get(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(url) }`);
+      const newResult = {
+        id: Date.now(),
+        url,
+        liveStatus: response.data.is_live ? 'Live' : 'Offline',
+        title: response.data.title || 'No title available',
+      };
+
+      setResults(prevResults => [ newResult, ...prevResults ]); // 添加新結果到列表頂部
+      setUrl(''); // 清空輸入框
+
     } catch (error) {
-      setLiveStatus('Error checking live status');
+      console.error('Error checking live status', error);
+      // 這裡可以設置錯誤處理邏輯
     }
   };
 
@@ -34,7 +43,7 @@ function App() {
             />
             <div className="input-group-append">
               <button
-                className="btn btn-outline-secondary"
+                className="btn btn-primary"
                 type="button"
                 id="button-addon2"
                 onClick={checkLiveStatus}
@@ -43,9 +52,18 @@ function App() {
               </button>
             </div>
           </div>
-          {liveStatus && <div className="alert alert-info" role="alert">{liveStatus}</div>}
         </div>
       </div>
+      {results.map((result, index) => (
+        <div className={`card ${ result.liveStatus.toLowerCase() }`}>
+          <div key={index} className="card mb-3">
+            <div className="card-body">
+              <h5 className="card-title">{result.title}</h5>
+              <p className="card-text">{result.liveStatus}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
