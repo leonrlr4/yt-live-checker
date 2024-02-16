@@ -17,6 +17,8 @@ This project is designed to monitor YouTube livestreams, providing real-time upd
 
 To set up the project, ensure Docker is installed on your system. Clone the repository and use Docker-compose to build and run the application:
 
+#### There is base url string in .env file which is not senstive no need to use .env.development
+
 ``` bash
 git clone https://github.com/leonrlr4/yt-livestream-monitor.git
 
