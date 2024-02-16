@@ -1,0 +1,13 @@
+customtkinter
+darkdetect
+Django
+future
+mutagen
+numpy
+pycryptodome
+pytz
+torch
+yt-dlp
+django-cors-headers
+gunicorn
+

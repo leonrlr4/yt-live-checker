@@ -1,14 +1,126 @@
-body {
-  background-color: #f7f7f7;
+.app-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.container {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+.title {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.alert {
+.input-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.url-input {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.check-status-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.check-status-button:hover {
+  background-color: #0056b3;
+}
+
+.results-container {
   margin-top: 20px;
+}
+
+.result-card {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.result-card:hover {
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  margin: 0;
+  color: #007bff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card-status {
+  color: #28a745;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.card-live {
+  border-left: 4px solid #28a745;
+  background-color: #f6ffed;
+}
+
+.card-offline {
+  border-left: 4px solid #dc3545;
+  background-color: #fff5f5;
+}
+
+.result-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.result-card {
+  position: relative;
+}
+
+.card-body button {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.btn-info {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+  border-color: #117a8b;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
 }
