@@ -9,6 +9,7 @@ def home(request):
 
 def check_live_status(request):
     video_url = request.GET.get('url')
+    print(video_url)
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
