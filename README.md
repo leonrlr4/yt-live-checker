@@ -17,10 +17,12 @@ This project is designed to monitor YouTube livestreams, providing real-time upd
 
 To set up the project, ensure Docker is installed on your system. Clone the repository and use Docker-compose to build and run the application:
 
-#### There is base url string in .env file which is not senstive no need to use .env.development
+**There is base url string in .env file which is not senstive no need to use .env.development**
 
 ``` bash
-git clone https://github.com/leonrlr4/yt-livestream-monitor.git
+git clone https://github.com/leonrlr4/yt-
+
+livestream-monitor.git
 
 cd yt-livestream-monitor
 
@@ -30,6 +32,16 @@ docker-compose up --build
 ## Usage
 
 Once the application is running, navigate to `http://localhost:3000` to access the web interface. Add YouTube channel IDs to start monitoring their livestream status.
+
+***Enter youtube url to check is live***
+
+***Click Refresh to check the latest status of steraming***
+
+***Click Remove to delete target card***
+
+***Click card will jump over to current youtube stream page***
+
+![image](https://hackmd.io/_uploads/BkqjeXpoa.png)
 
 ## Contributing
 
