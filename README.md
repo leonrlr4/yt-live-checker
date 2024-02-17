@@ -1,54 +1,101 @@
-# Project Name
-
-yt-livestream-monitor
+# YT Livestream Monitor
 
 ## Description
 
-This project is designed to monitor YouTube livestreams, providing real-time updates on the status of specified channels. It offers an intuitive user interface that indicates live and offline statuses through color codes, enhancing user experience.
-
-## Features
-
-- Real-time monitoring of YouTube livestream statuses.
-- Containerized application for easy deployment and scalability.
-- Intuitive user interface with live and offline status colors.
-- Frontend and backend integration for seamless operation.
+YT Livestream Monitor is a comprehensive tool designed to track and analyze YouTube livestreams in real-time. This project leverages the power of modern web technologies to provide users with up-to-date information on their favorite livestreams, including viewer counts, chat interactions, and more.
 
 ## Installation
 
-To set up the project, ensure Docker is installed on your system. Clone the repository and use Docker-compose to build and run the application:
+### Prerequisites
 
-**There is base url string in .env file which is not senstive no need to use .env.development**
+- Python 3.6+
+- Node.js 12+
+- Docker (optional)
 
-``` bash
-git clone https://github.com/leonrlr4/yt-livestream-monitor.git
+### Docker Installation
 
-cd yt-livestream-monitor
+If you have Docker installed, you can set up the project using Docker containers.
 
-docker-compose up --build
-```
+1. Build the Docker image:
+
+   ```
+   docker build -t yt-livestream-monitor .
+   ```
+
+2. Run the Docker container:
+
+   ```
+   docker run -d -p 8000:8000 yt-livestream-monitor
+   ```
+
+### Frontend Installation with Virtualenv
+
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/leonrlr4/yt-livestream-monitor.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```
+   cd yt-livestream-monitor/yt_livestream_monitor/backend
+   ```
+
+3. Create a Python virtual environment and activate it:
+
+   install virtualenv with ```pip install virtualenv``` command
+
+   ```
+   virtualenv venv
+   source venv/bin/activate
+   ```
+
+4. Install the required Python packages using pip(or pip3 instead):
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+5. Launch django server
+
+    ```python3 manage.py runserver```
+
+### Frontend Installation with Node.js
+
+1. Navigate to the frontend directory:
+
+   ```
+   cd frontend
+   ```
+
+2. Install Node.js dependencies using `npm`:
+
+   ```
+   npm install
+   ```
+
+3. To start the frontend server, run:
+
+   ```
+   npm start
+   ```
 
 ## Usage
 
-Once the application is running, navigate to `http://localhost:3000` to access the web interface. Add YouTube channel IDs to start monitoring their livestream status.
+After installation, you can start monitoring YouTube livestreams by navigating to the web interface provided by the frontend server  <http://localhost:3000> and enter the livestreams url you wish to monitor.
 
-***Enter youtube url to check is live***
+#### status
 
-***Click Refresh to check the latest status of steraming***
+- green:  live :+1:
+- red:    offline :-1:
 
-***Click Remove to delete target card***
+#### features
 
-***Click card will jump over to current youtube stream page***
+- click card to go to the stream page
 
-![image](https://hackmd.io/_uploads/BkqjeXpoa.png)
+- remove and update function
 
-## Contributing
+- not allowed to check same url if is in the list
 
-Contributions are welcome! If you have improvements or bug fixes, please fork the repository and submit a pull request.
-
-## License
-
-Specify the license under which your project is distributed.
-
-## Contact
-
-For questions or feedback, please reach out to [your contact information].
+- empty or invalid yt live url are not allowed
