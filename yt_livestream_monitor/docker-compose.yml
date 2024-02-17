@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend:/app # 将本地backend目录映射到容器内的/app目录
+      - ./backend:/app
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
