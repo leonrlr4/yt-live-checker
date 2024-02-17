@@ -26,6 +26,10 @@ def get_youtube_info(video_url):
 def check_live_status(request):
     video_url = request.GET.get('url')
 
+    if not video_url:
+        logger.error("Empty URL was provided")
+        return JsonResponse({'error': 'Empty URL'}, status=400)
+
     validate = URLValidator()
     try:
         validate(video_url)
