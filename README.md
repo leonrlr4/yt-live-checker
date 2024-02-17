@@ -28,7 +28,7 @@ If you have Docker installed, you can set up the project using Docker containers
    docker run -d -p 8000:8000 yt-livestream-monitor
    ```
 
-### Frontend Installation with Virtualenv
+### Backend Installation with Virtualenv
 
 1. Clone the repository:
 
