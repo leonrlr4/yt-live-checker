@@ -62,7 +62,6 @@ function App() {
     <div className="app-container">
       <h1>YouTube Live Stream Monitor</h1>
       <div className="app-container">
-        <h1>YouTube Live Stream Monitor</h1>
         <form onSubmit={handleFormSubmit}>
           <div className="input-group">
             <input
