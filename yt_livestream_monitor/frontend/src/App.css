@@ -124,3 +124,20 @@
   background-color: #c82333;
   border-color: #bd2130;
 }
+
+
+.card-img-right {
+  width: 100px;
+  height: 100px;
+  float: right;
+}
+
+.result-card {
+  cursor: pointer;
+  /* other styles */
+}
+
+body {
+  background-color: #121212e4;
+  color: #de4624e1;
+}

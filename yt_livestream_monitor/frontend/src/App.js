@@ -22,10 +22,12 @@ function App() {
         {
           url,
           liveStatus: response.data.is_live ? 'Live' : 'Offline',
-          title: response.data.title || 'No title available'
+          title: response.data.title || 'No title available',
+          thumbnailUrl: response.data.thumbnail_url
         },
       ]);
       setUrl('');
+      console.log(response.data);
     } catch (err) {
       setError('Error checking live status. Please try again.');
     }
@@ -35,7 +37,7 @@ function App() {
     try {
       const response = await axios.get(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(urlToRefresh) }`);
       setResults(results.map((result, i) =>
-        i === index ? {...result, liveStatus: response.data.is_live ? 'Live' : 'Offline', title: response.data.title || 'No title available'} : result
+        i === index ? {...result, liveStatus: response.data.is_live ? 'Live' : 'Offline', title: response.data.title || 'No title available', thumbnailUrl: response.data.thumbnail_url} : result  // 在这里添加 thumbnailUrl
       ));
       setNotification({message: 'Status refreshed!', type: 'success'});
       setTimeout(() => setNotification({message: '', type: ''}), 2000);
@@ -80,20 +82,19 @@ function App() {
             key={index}
             className={`card result-card ${ getStatusClass(result.liveStatus) }`}
             onClick={() => window.open(result.url, '_blank')}
-            style={{cursor: 'pointer'}}
           >
             <div className="card-body">
               <h5 className="card-title">{result.title}</h5>
               <p className="card-text">{result.liveStatus}</p>
+              <img src={result.thumbnailUrl} className="card-img-right" />
               <button onClick={(e) => {e.stopPropagation(); refreshStatus(result.url, index);}} className="btn btn-sm btn-info">Refresh</button>
               <button onClick={(e) => {e.stopPropagation(); removeResult(index);}} className="btn btn-sm btn-danger">Remove</button>
-
             </div>
           </div>
         ))}
-
       </div>
     </div>
+
   );
 }
 
