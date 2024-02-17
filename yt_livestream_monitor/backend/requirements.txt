@@ -8,4 +8,6 @@ pytz
 yt-dlp
 django-cors-headers
 gunicorn
+pytest 
+pytest-django
 
