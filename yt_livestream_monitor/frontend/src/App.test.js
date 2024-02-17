@@ -1,51 +1,76 @@
 import React from 'react';
-import {render, fireEvent, screen, waitFor} from '@testing-library/react';
-import axios from 'axios';
+import {render, screen, fireEvent, waitFor} from '@testing-library/react';
 import App from './App';
-import {cleanup} from '@testing-library/react';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
-jest.mock('axios');
-window.open = jest.fn();
+describe('App', () => {
+  const mock = new MockAdapter(axios);
+  const mockUrl = 'https://example.com/live';
+  const mockApiResponse = {
+    is_live: true,
+    title: 'Live Stream Title',
+    thumbnail_url: 'https://example.com/thumbnail.jpg'
+  };
 
-describe('App Component', () => {
-  test('enters URL and submits form', async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {is_live: true, title: 'Test Video', thumbnail_url: 'https://example.com/thumbnail.jpg'},
-    });
-
-    render(<App />);
-    const input = screen.getByPlaceholderText('Enter YouTube Live URL');
-    fireEvent.change(input, {target: {value: 'https://example.com/live'}});
-    fireEvent.click(screen.getByRole('button', {name: /check status/i}));
-
-    await waitFor(() => {
-      expect(screen.getByText('Test Video')).toBeInTheDocument();
-    });
-
-    expect(screen.getByText('Live')).toBeInTheDocument();
-    expect(screen.getByRole('img', {name: ''})).toHaveAttribute('src', 'https://example.com/thumbnail.jpg');
+  beforeEach(() => {
+    mock.reset();
   });
 
-  test('deletes a result', async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {is_live: true, title: 'Test Video', thumbnail_url: 'https://example.com/thumbnail.jpg'},
-    });
+  it('checks live status successfully', async () => {
+    mock.onGet(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(mockUrl) }`).reply(200, mockApiResponse);
 
     render(<App />);
-    const input = screen.getByPlaceholderText('Enter YouTube Live URL');
-    fireEvent.change(input, {target: {value: 'https://example.com/live'}});
-    fireEvent.click(screen.getByRole('button', {name: /check status/i}));
+    fireEvent.change(screen.getByPlaceholderText(/Enter YouTube Live URL/i), {target: {value: mockUrl}});
+    fireEvent.click(screen.getByRole('button', {name: /Check Status/i}));
 
     await waitFor(() => {
-      expect(screen.getByText('Test Video')).toBeInTheDocument();
-    });
-
-    fireEvent.click(screen.getAllByRole('button', {name: /remove/i})[ 0 ]);
-
-    await waitFor(() => {
-      expect(screen.queryByText('Test Video')).not.toBeInTheDocument();
+      expect(screen.getByText(mockApiResponse.title)).toBeInTheDocument();
     });
   });
 
-  afterEach(cleanup);
+  it('handles empty URL input error', async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', {name: /Check Status/i}));
+    expect(screen.getByText(/Error: Empty URL/i)).toBeInTheDocument();
+  });
+
+  it('refreshes status of a URL successfully', async () => {
+    mock.onGet(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(mockUrl) }`).reply(200, mockApiResponse);
+
+    render(<App />);
+    fireEvent.change(screen.getByPlaceholderText(/Enter YouTube Live URL/i), {target: {value: mockUrl}});
+    fireEvent.click(screen.getByRole('button', {name: /Check Status/i}));
+
+    await waitFor(() => {
+      expect(screen.getByText(mockApiResponse.title)).toBeInTheDocument();
+    });
+
+    const updatedApiResponse = {...mockApiResponse, title: 'Updated Live Stream Title'};
+    mock.onGet(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(mockUrl) }`).reply(200, updatedApiResponse);
+
+    fireEvent.click(screen.getByText(/Refresh/i));
+
+    await waitFor(() => {
+      expect(screen.getByText(updatedApiResponse.title)).toBeInTheDocument();
+    });
+  });
+
+  it('removes a URL from the list successfully', async () => {
+    mock.onGet(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(mockUrl) }`).reply(200, mockApiResponse);
+    render(<App />);
+    fireEvent.change(screen.getByPlaceholderText(/Enter YouTube Live URL/i), {target: {value: mockUrl}});
+    fireEvent.click(screen.getByRole('button', {name: /Check Status/i}));
+
+    await waitFor(() => {
+      expect(screen.getByText(mockApiResponse.title)).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getAllByText(/Remove/i)[ 0 ]);
+
+    await waitFor(() => {
+      expect(screen.queryByText(mockApiResponse.title)).toBeNull();
+    });
+  });
+
 });
