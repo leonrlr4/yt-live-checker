@@ -27,7 +27,6 @@ function App() {
         },
       ]);
       setUrl('');
-      console.log(response.data);
     } catch (err) {
       setError('Error checking live status. Please try again.');
     }
@@ -54,21 +53,30 @@ function App() {
     setTimeout(() => setNotification({message: '', type: ''}), 2000);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    checkLiveStatus();
+  };
 
   return (
     <div className="app-container">
       <h1>YouTube Live Stream Monitor</h1>
-      <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Enter YouTube Live URL"
-          value={url}
-          onChange={e => setUrl(e.target.value)}
-        />
-        <button className="btn btn-primary" onClick={checkLiveStatus}>
-          Check Status
-        </button>
+      <div className="app-container">
+        <h1>YouTube Live Stream Monitor</h1>
+        <form onSubmit={handleFormSubmit}>
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter YouTube Live URL"
+              value={url}
+              onChange={e => setUrl(e.target.value)}
+            />
+            <button type="submit" className="btn btn-primary">
+              Check Status
+            </button>
+          </div>
+        </form>
       </div>
       {error && <div className="alert alert-danger">{error}</div>}
       <div className="results-container">
@@ -86,14 +94,14 @@ function App() {
             <div className="card-body">
               <h5 className="card-title">{result.title}</h5>
               <p className="card-text">{result.liveStatus}</p>
-              <img src={result.thumbnailUrl} className="card-img-right" />
+              <img alt='' src={result.thumbnailUrl} className="card-img-right" />
               <button onClick={(e) => {e.stopPropagation(); refreshStatus(result.url, index);}} className="btn btn-sm btn-info">Refresh</button>
               <button onClick={(e) => {e.stopPropagation(); removeResult(index);}} className="btn btn-sm btn-danger">Remove</button>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </div >
 
   );
 }

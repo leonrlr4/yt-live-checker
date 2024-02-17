@@ -134,10 +134,33 @@
 
 .result-card {
   cursor: pointer;
-  /* other styles */
 }
 
 body {
   background-color: #121212e4;
   color: #de4624e1;
+}
+
+.result-card {
+  background-color: #242424;
+  color: #ffffff;
+  border: 1px solid #333333;
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.1);
+}
+
+.result-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.2);
+}
+
+.card-title,
+.card-text {
+  color: #ffffff;
+}
+
+.card-live {
+  border-left: 4px solid #81c784;
+}
+
+.card-offline {
+  border-left: 4px solid #e57373;
 }
