@@ -106,7 +106,9 @@ function App() {
           >
             <div className="card-body">
               <h5 className="card-title">{result.title}</h5>
-              <p className="card-text">{result.liveStatus}</p>
+              <p className={`card-text ${ result.liveStatus === 'Live' ? 'status-online' : 'status-offline' }`}>
+                {result.liveStatus}
+              </p>
               <img alt='' src={result.thumbnailUrl} className="card-img-right" />
               <button onClick={(e) => {e.stopPropagation(); refreshStatus(result.url, index);}} className="btn btn-sm btn-info">Refresh</button>
               <button onClick={(e) => {e.stopPropagation(); removeResult(index);}} className="btn btn-sm btn-danger">Remove</button>

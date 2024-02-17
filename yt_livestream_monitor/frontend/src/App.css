@@ -164,3 +164,11 @@ body {
 .card-offline {
   border-left: 4px solid #e57373;
 }
+
+.status-online {
+  color: green;
+}
+
+.status-offline {
+  color: red;
+}
