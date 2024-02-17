@@ -1,10 +1,10 @@
-from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 import yt_dlp
+import logging
 
-
-def home(request):
-    return HttpResponse("Welcome to the Live Stream Monitor!")
+logger = logging.getLogger(__name__)
 
 
 def get_youtube_info(video_url):
@@ -25,6 +25,18 @@ def get_youtube_info(video_url):
 
 def check_live_status(request):
     video_url = request.GET.get('url')
+
+    validate = URLValidator()
+    try:
+        validate(video_url)
+    except ValidationError as e:
+        logger.error(f"Invalid URL: {video_url}")
+        return JsonResponse({'error': 'Invalid URL'}, status=400)
+
+    if not video_url:
+        logger.error("Empty URL was provided")
+        return JsonResponse({'error': 'Empty URL'}, status=400)
+
     info_dict = get_youtube_info(video_url)
 
     if 'error' in info_dict:
@@ -34,3 +46,7 @@ def check_live_status(request):
     title = info_dict.get('title')
     thumbnail_url = info_dict.get('thumbnail')
     return JsonResponse({'is_live': is_live, 'title': title, 'thumbnail_url': thumbnail_url})
+
+
+def home(request):
+    return HttpResponse("Welcome to the Live Stream Monitor!")

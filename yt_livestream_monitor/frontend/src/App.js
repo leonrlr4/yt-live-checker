@@ -10,6 +10,13 @@ function App() {
 
   const checkLiveStatus = async () => {
     setError('');
+    setNotification({message: '', type: ''});
+
+    if (!url.trim()) {
+      setError('Error: Empty URL');
+      return;
+    }
+
     if (results.some(result => result.url === url)) {
       setError('This URL has already been checked.');
       return;
@@ -17,18 +24,25 @@ function App() {
 
     try {
       const response = await axios.get(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(url) }`);
-      setResults(prevResults => [
-        ...prevResults,
-        {
-          url,
-          liveStatus: response.data.is_live ? 'Live' : 'Offline',
-          title: response.data.title || 'No title available',
-          thumbnailUrl: response.data.thumbnail_url
-        },
-      ]);
-      setUrl('');
+
+      if (response.status === 200) {
+        setResults(prevResults => [
+          ...prevResults,
+          {
+            url,
+            liveStatus: response.data.is_live ? 'Live' : 'Offline',
+            title: response.data.title || 'No title available',
+            thumbnailUrl: response.data.thumbnail_url
+          },
+        ]);
+        setUrl('');
+      } else if (response.data && response.data.error) {
+        setError(response.data.error);
+      } else {
+        setError('Failed to check live status. Please try again.');
+      }
     } catch (err) {
-      setError('Error checking live status. Please try again.');
+      setError(err.response?.data?.error || 'Network or server error. Please try again.');
     }
   };
 
