@@ -19,16 +19,16 @@ If you have Docker installed, you can set up the project using Docker containers
 1. Build the Docker image:
 
    ```
-   docker build -t yt-livestream-monitor .
-   ```
+    cd yt-livestream-monitor/yt_livestream_monitor
+   
+    docker compose up -d
+    ```
 
-2. Run the Docker container:
-
-   ```
-   docker run -d -p 8000:8000 yt-livestream-monitor
-   ```
+2. go to <http://localhost:3000>
 
 ### Backend Installation with Virtualenv
+
+       // make sure you are using python3 not 2 when using 'python' command
 
 1. Clone the repository:
 
@@ -51,7 +51,7 @@ If you have Docker installed, you can set up the project using Docker containers
    source venv/bin/activate
    ```
 
-4. Install the required Python packages using pip(or pip3 instead):
+4. Install the required Python packages using pip:
 
    ```
    pip install -r requirements.txt
@@ -59,14 +59,14 @@ If you have Docker installed, you can set up the project using Docker containers
 
 5. Launch django server
 
-    ```python3 manage.py runserver```
+    ```python manage.py runserver```
 
 ### Frontend Installation with Node.js
 
-1. Navigate to the frontend directory:
+1. Open a new terminal session and navigate to the frontend directory:
 
    ```
-   cd frontend
+   cd yt-livestream-monitor/yt_livestream_monitor/frontend
    ```
 
 2. Install Node.js dependencies using `npm`:
@@ -80,6 +80,20 @@ If you have Docker installed, you can set up the project using Docker containers
    ```
    npm start
    ```
+
+### Testing
+
+- Frontend
+
+   ```
+   npm test
+   ```
+
+- Backend
+
+   ```
+   python manage.py runserver
+    ```
 
 ## Usage
 
