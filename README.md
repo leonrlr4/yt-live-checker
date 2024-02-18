@@ -94,7 +94,7 @@ If you have Docker installed, you can set up the project using Docker containers
 - Backend
 
    ```
-   python manage.py runserver
+   python manage.py test monitor
     ```
 
 ## Usage
