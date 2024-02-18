@@ -28,7 +28,7 @@ If you have Docker installed, you can set up the project using Docker containers
 
 ### Backend Installation with Virtualenv
 
-       // make sure you are using python3 not 2 when using 'python' command
+       // make sure you are using python3 not 2 when using 'python' or 'pip' command
 
 1. Clone the repository:
 
