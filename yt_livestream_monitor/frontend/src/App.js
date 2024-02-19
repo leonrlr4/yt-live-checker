@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -8,7 +8,7 @@ function App() {
   const [ error, setError ] = useState('');
   const [ notification, setNotification ] = useState({message: '', type: ''});
 
-  const checkLiveStatus = async () => {
+  const checkLiveStatus = useCallback(async () => {
     setError('');
     setNotification({message: '', type: ''});
 
@@ -24,7 +24,6 @@ function App() {
 
     try {
       const response = await axios.get(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(url) }`);
-
       if (response.status === 200) {
         setResults(prevResults => [
           ...prevResults,
@@ -32,7 +31,7 @@ function App() {
             url,
             liveStatus: response.data.is_live ? 'Live' : 'Offline',
             title: response.data.title || 'No title available',
-            thumbnailUrl: response.data.thumbnail_url
+            thumbnailUrl: response.data.thumbnail_url,
           },
         ]);
         setUrl('');
@@ -44,13 +43,13 @@ function App() {
     } catch (err) {
       setError(err.response?.data?.error || 'Network or server error. Please try again.');
     }
-  };
+  }, [ url, results ]);
 
-  const refreshStatus = async (urlToRefresh, index) => {
+  const refreshStatus = useCallback(async (urlToRefresh, index) => {
     try {
       const response = await axios.get(`${ process.env.REACT_APP_API_URL }/monitor/check/?url=${ encodeURIComponent(urlToRefresh) }`);
       setResults(results.map((result, i) =>
-        i === index ? {...result, liveStatus: response.data.is_live ? 'Live' : 'Offline', title: response.data.title || 'No title available', thumbnailUrl: response.data.thumbnail_url} : result  // 在这里添加 thumbnailUrl
+        i === index ? {...result, liveStatus: response.data.is_live ? 'Live' : 'Offline', title: response.data.title || 'No title available', thumbnailUrl: response.data.thumbnail_url} : result
       ));
       setNotification({message: 'Status refreshed!', type: 'success'});
       setTimeout(() => setNotification({message: '', type: ''}), 2000);
@@ -59,13 +58,13 @@ function App() {
       setNotification({message: 'Error refreshing status.', type: 'danger'});
       setTimeout(() => setNotification({message: '', type: ''}), 2000);
     }
-  };
+  }, [ results ]);
 
-  const removeResult = index => {
+  const removeResult = useCallback(index => {
     setResults(results.filter((_, i) => i !== index));
     setNotification({message: 'URL removed from the list.', type: 'success'});
     setTimeout(() => setNotification({message: '', type: ''}), 2000);
-  };
+  }, [ results ]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -85,9 +84,7 @@ function App() {
               value={url}
               onChange={e => setUrl(e.target.value)}
             />
-            <button type="submit" className="btn btn-primary">
-              Check Status
-            </button>
+            <button type="submit" className="btn btn-primary">Check Status</button>
           </div>
         </form>
       </div>
@@ -100,8 +97,8 @@ function App() {
         )}
         {results.map((result, index) => (
           <div
-            key={index}
-            className={`card result-card ${ getStatusClass(result.liveStatus) }`}
+            key={result.url}
+            className={`card result-card ${ result.liveStatus === 'Live' ? 'card-live' : 'card-offline' }`}
             onClick={() => window.open(result.url, '_blank')}
           >
             <div className="card-body">
@@ -116,13 +113,8 @@ function App() {
           </div>
         ))}
       </div>
-    </div >
-
+    </div>
   );
-}
-
-function getStatusClass(status) {
-  return status === 'Live' ? 'card-live' : 'card-offline';
 }
 
 export default App;
